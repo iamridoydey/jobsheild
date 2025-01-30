@@ -17,19 +17,19 @@ import {
 } from "@/components/ui/sidebar";
 import jobsheildLogo from "@/public/jobsheild_logo.svg";
 import { NavUser } from "./nav-user";
+import useFrauderMode from "@/hooks/ActiveFrauderMode";
 
 // Sample data
 const items = [
   {
     title: "Fraud Companies",
-    url: "#",
     icon: Building2,
-    isActive: true,
+    mode: "view",
   },
   {
     title: "Add New Frauder",
-    url: "#",
     icon: Plus,
+    mode: "create",
   },
 ];
 
@@ -40,8 +40,10 @@ const user = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { state } = useSidebar()
+  const { state } = useSidebar();
   const isCollapsed = state == "collapsed";
+  const { activeMode, setActiveMode } = useFrauderMode();
+
   return (
     <Sidebar collapsible="icon" {...props}>
       {/* Sidebar Header */}
@@ -71,9 +73,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
-                <a
-                  href={item.url}
-                  className={`flex items-center gap-3 px-3 py-6 hover:bg-gray-400 hover:text-gray-100`}
+                <Link
+                  href={""}
+                  className={`flex items-center gap-3 px-3 py-6 hover:bg-gray-500 hover:text-gray-100 ${
+                    activeMode === item.mode ? "bg-zinc-300" : ""
+                  }`}
+                  onClick={() => setActiveMode(item.mode)}
                 >
                   <span className="iconWrapper">
                     <item.icon />
@@ -85,7 +90,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   >
                     {item.title}
                   </span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
@@ -94,7 +99,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       {/* Sidebar Footer */}
       <SidebarFooter>
-        <NavUser user={user}/>
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

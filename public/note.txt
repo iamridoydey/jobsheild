@@ -1,0 +1,39 @@
+"use client";
+
+import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
+import React from "react";
+
+// Dynamically import pages
+const Frauders = dynamic(() => import("./frauders/page"));
+const Dashboard = dynamic(() => import("./dashboard/page"));
+
+const PagesHandler = () => {
+  const pathname = usePathname();
+  const path = pathname.substring(1);
+
+  const pages: { [key: string]: React.JSX.Element } = {
+    frauders: <Frauders />,
+    dashboard: <Dashboard />,
+  };
+
+  const current = pages[path] || <div>Page not found</div>;
+  return <div className="pages_wrapper mx-6 md:mx-12">{current}</div>;
+};
+
+export default PagesHandler;
+
+
+
+./page.tsx
+
+"use client"
+import { usePathname } from "next/navigation";
+import PagesHandler from "./[pages]/page";
+
+export default function Home() {
+  const pathname = usePathname();
+  const path = pathname.substring(1);
+
+  return <>{path === "" ? <div>Jobsheild.com</div> : <PagesHandler />}</>;
+}
