@@ -2,6 +2,7 @@ import gql from "graphql-tag";
 
 const typeDefs = gql`
   scalar Date
+  scalar Upload
 
   type User {
     _id: ID!
@@ -118,6 +119,10 @@ const typeDefs = gql`
       isJustified: Boolean
     ): Proof
     deleteProof(id: ID!): Proof
+
+    # Cloudinary Mutation
+    uploadImage(file: Upload!): String
+    deleteImage(publicId: String!): Boolean
   }
 `;
 

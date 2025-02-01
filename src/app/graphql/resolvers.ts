@@ -1,4 +1,6 @@
+import { CloudinaryServices } from "../services/cloudinaryServices";
 import { FraudServices } from "../services/fraudServices";
+import { DeleteArgs, UploadArgs } from "../services/interfaces/cloudinaryInterfaces";
 import { CreateFrauder, DeleteFrauder, GetFrauder, UpdateFrauder } from "../services/interfaces/frauderInterfaces";
 import { CreateProof, DeleteProof, GetProof, UpdateProof } from "../services/interfaces/proofInterfaces";
 import { CreateUser, DeleteUser, GetUser, UpdateUser } from "../services/interfaces/userInterfaces";
@@ -54,6 +56,21 @@ const resolvers = {
     },
     deleteProof: async (_: any, payload: DeleteProof) => {
       return await ProofServices.deleteProof(payload);
+    },
+
+    // Cloudinary Mutation
+    uploadImage: async (_: any, { file }: UploadArgs) => {
+      const { createReadStream } = await file;
+      const stream = createReadStream();
+
+      const result = await CloudinaryServices.uploadImage(stream);
+
+      return result.secure_url;
+    },
+    deleteImage: async (_: any, { publicId }: DeleteArgs) => {
+      const result = await CloudinaryServices.deleteImage(publicId);
+
+      return result.result === "ok";
     },
   },
 };
