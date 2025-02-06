@@ -4,6 +4,7 @@ import { CreateProof, DeleteProof, GetProof, UpdateProof } from "../services/int
 import { CreateUser, DeleteUser, GetUser, UpdateUser } from "../services/interfaces/userInterfaces";
 import { ProofServices } from "../services/proofServices";
 import { UserServices } from "../services/userServices";
+import { VerificationService } from "../services/VerificationServices";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const resolvers = {
@@ -55,6 +56,12 @@ const resolvers = {
     deleteProof: async (_: any, payload: DeleteProof) => {
       return await ProofServices.deleteProof(payload);
     },
+    // Verification
+    sendVerificationEmail: async (_: any, { email }: { email: string }) =>
+      await VerificationService.sendVerificationEmail(email),
+
+    verifyCode: async (_: any, { email, code }: { email: string, code: any }) =>
+      await VerificationService.verifyCode(email, code),
   },
 };
 

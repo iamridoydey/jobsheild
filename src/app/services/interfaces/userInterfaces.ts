@@ -21,5 +21,7 @@ export interface DeleteUser {
 
 // Query
 export interface GetUser {
-  id: string;
+  id?: string;
+  email?: string;
+  username?: string;
 }

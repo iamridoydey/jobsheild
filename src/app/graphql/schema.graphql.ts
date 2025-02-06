@@ -62,7 +62,7 @@ const typeDefs = gql`
 
   type Query {
     getUsers: [User]
-    getUser(id: ID!): User
+    getUser(id: ID, email: String, username: String): User
     getFrauders: [Frauder]
     getFrauder(id: ID, companyName: String): Frauder
     getProofs(frauderId: String!): [Proof]
@@ -118,6 +118,10 @@ const typeDefs = gql`
       isJustified: Boolean
     ): Proof
     deleteProof(id: ID!): Proof
+
+    # Email verification
+    sendVerificationEmail(email: String!): Boolean
+    verifyCode(email: String!, code: String!): Boolean
   }
 `;
 

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import bcrypt from "bcryptjs";
 import User from "@/models/User.model";
 import {
   CreateUser,
@@ -16,19 +17,20 @@ export class UserServices {
   public static async createUser(payload: CreateUser) {
     try {
       await dbConnect();
-      const { username, email } = payload;
+      const { username, email, password } = payload;
 
-      // check whether the user already exists
+      // Check if user already exists
       const findByUsername = await User.findOne({ username });
-
       if (findByUsername) return {};
 
       const findByEmail = await User.findOne({ email });
-
       if (findByEmail) return {};
 
-      // If the user doesn't exist then add the user to the database
-      const user = await User.create(payload);
+      // Hash password before saving
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Create user with hashed password
+      const user = await User.create({ ...payload, password: hashedPassword });
 
       return user;
     } catch (error: any) {
@@ -42,12 +44,16 @@ export class UserServices {
       await dbConnect();
       const { id, ...updateData } = payload;
 
-      // check whether the user exists
+      // Check if user exists
       const user = await User.findById(id);
-
       if (!user) return {};
 
-      // If the user exists, update the user
+      // If updating password, hash it before saving
+      if (updateData.password) {
+        updateData.password = await bcrypt.hash(updateData.password, 10);
+      }
+
+      // Update user
       const updatedUser = await User.findByIdAndUpdate(id, updateData, {
         new: true,
       });
@@ -64,14 +70,12 @@ export class UserServices {
       await dbConnect();
       const { id } = payload;
 
-      // check whether the user exists
+      // Check if user exists
       const user = await User.findById(id);
-
       if (!user) return {};
 
-      // If the user exists, delete the user
+      // Delete user
       const deletedUser = await User.findByIdAndDelete(id);
-
       return deletedUser;
     } catch (error: any) {
       console.log("Delete User Error: ", error.message);
@@ -95,8 +99,14 @@ export class UserServices {
   public static async getUser(payload: GetUser) {
     try {
       await dbConnect();
-      const { id } = payload;
-      const user = await User.findById(id);
+
+      const { id, email, username } = payload;
+
+      // Find user based on available field
+      const user = await User.findOne(
+        id ? { _id: id } : email ? { email } : { username }
+      );
+
       if (!user) return {};
 
       return user;
