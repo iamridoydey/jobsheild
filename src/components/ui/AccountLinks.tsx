@@ -11,7 +11,7 @@ const AccountLinks = ({
 }) => {
   const addField = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setUrls([...urls, { key: "", url: "" }]);
+    setUrls([...urls, { key: "", value: "" }]);
   };
 
   const removeField = (index: number) => {
@@ -32,14 +32,14 @@ const AccountLinks = ({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newFields = [...urls];
-    newFields[index].url = event.target.value;
+    newFields[index].value = event.target.value;
     setUrls(newFields);
   };
 
-  const allUrlsValid = urls.every((field) => isValidUrl(field.url));
+  const allUrlsValid = urls.every((field) => isValidUrl(field.value));
 
   return (
-    <div className="account_links_wrapper p-4">
+    <div className="account_links_wrapper py-4">
       <h4 className="account_links_title font-bold">Contact Links</h4>
       <div className="flex flex-col">
         {urls.map((field, index) => (
@@ -63,7 +63,7 @@ const AccountLinks = ({
               <input
                 type="text"
                 placeholder="Account URL"
-                value={field.url}
+                value={field.value}
                 onChange={(e) => handleUrlChange(index, e)}
                 className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-100 text-black"
               />

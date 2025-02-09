@@ -48,7 +48,7 @@ const HrList = ({
   const allUrlsValid = hrList.every((field) => isValidUrl(field.accountUrl));
 
   return (
-    <div className="hrlist_wrapper p-4">
+    <div className="hrlist_wrapper py-4">
       <h4 className="hrlist_title font-bold">HR List</h4>
       <div className="flex flex-col">
         {hrList.map((field, index) => (
