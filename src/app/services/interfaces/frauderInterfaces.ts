@@ -16,7 +16,6 @@ export interface CreateFrauder {
   logo?: string;
   importantLinks?: Link[];
   createdBy: string;
-  proofs: string[];
 }
 
 export interface UpdateFrauder {
@@ -26,7 +25,6 @@ export interface UpdateFrauder {
   hrList: HrSchema[];
   logo?: string;
   importantLinks?: Link[];
-  proofs: string[];
 }
 
 export interface DeleteFrauder {
