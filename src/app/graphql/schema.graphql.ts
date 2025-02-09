@@ -91,7 +91,6 @@ const typeDefs = gql`
       contributors: [ID!]
       importantLinks: [LinkInput!]
       createdBy: ID!
-      proofs: [ID!]
     ): Frauder
     updateFrauder(
       id: ID!
@@ -100,7 +99,6 @@ const typeDefs = gql`
       hrList: [HrSchemaInput!]
       logo: String
       importantLinks: [LinkInput!]
-      proofs: [ID!]
     ): Frauder
     deleteFrauder(id: ID!, userId: ID!): Frauder
     createProof(
