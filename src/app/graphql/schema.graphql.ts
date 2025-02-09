@@ -121,7 +121,7 @@ const typeDefs = gql`
 
     # Email verification
     sendVerificationEmail(email: String!): Boolean
-    verifyCode(email: String!, code: String!): Boolean
+    verifyCode(email: String!, code: String!): User
   }
 `;
 
