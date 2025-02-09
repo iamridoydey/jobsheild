@@ -13,6 +13,7 @@ export interface UpdateUser {
   email?: string;
   password?: string;
   role?: string;
+  isVerified?: boolean;
 }
 
 export interface DeleteUser {

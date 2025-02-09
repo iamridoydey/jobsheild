@@ -31,7 +31,7 @@ export class UserServices {
 
       // Create user with hashed password
       const user = await User.create({ ...payload, password: hashedPassword });
-
+      console.log("Created User ", user)
       return user;
     } catch (error: any) {
       console.log("Create User Error: ", error.message);

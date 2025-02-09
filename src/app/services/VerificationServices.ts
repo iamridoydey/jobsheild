@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
+import { UserServices } from "./userServices";
 
 const verificationCodes = new Map();
+
 
 export class VerificationService {
   static async sendVerificationEmail(email: string): Promise<boolean> {
@@ -16,13 +18,32 @@ export class VerificationService {
     }
   }
 
-  static async verifyCode(email: string, code: string): Promise<boolean> {
+  static async verifyCode(email: string, code: string) {
     const storedCode = verificationCodes.get(email);
+
     if (storedCode === code) {
-      verificationCodes.delete(email); 
-      return true;
+      verificationCodes.delete(email);
+
+      try {
+        // Find the user by email
+        const user = await UserServices.getUser({ email });
+
+        if (!user) return {}; // User not found
+
+        // Update the user to mark them as verified
+        const updatedUser = await UserServices.updateUser({
+          id: user.id,
+          isVerified: true,
+        });
+
+        return updatedUser; // Return the updated user
+      } catch (error) {
+        console.error("Error verifying user:", error);
+        return {}; // Return empty object on error
+      }
     }
-    return false;
+
+    return {};
   }
 
   private static async sendEmail(email: string, code: string) {
