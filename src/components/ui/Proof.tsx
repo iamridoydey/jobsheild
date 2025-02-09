@@ -108,7 +108,7 @@ const Proof = ({
 
           {/* Image Preview */}
           <div className="grid grid-cols-3 gap-4 mt-4 w-full">
-            {previewUrls.slice(0, 2).map((image, index) => (
+            {previewUrls.slice(0, previewUrls.length == 3 ? previewUrls.length : 2).map((image, index) => (
               <div
                 key={index}
                 className="relative h-24 md:h-32 lg:h-48"
