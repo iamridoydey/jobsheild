@@ -71,6 +71,7 @@ const ProofSection = ({
     };
 
     fetchUsernames();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [proofs]);
 
   const handleImageClick = (images: string[], index: number) => {
