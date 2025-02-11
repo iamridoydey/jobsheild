@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { X } from "lucide-react";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
