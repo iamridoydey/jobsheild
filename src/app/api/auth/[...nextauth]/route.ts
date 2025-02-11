@@ -34,7 +34,7 @@ const authOptions = {
           const variableKey = isEmail ? "email" : "username";
 
           const res = await fetch(
-            `/api/graphql`,
+            `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
