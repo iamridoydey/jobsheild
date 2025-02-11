@@ -40,7 +40,7 @@ const SignInSignUpPopup = () => {
       } else {
         // Sign Up (Handle separately with API call)
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+          `/api/graphql`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

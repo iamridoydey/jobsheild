@@ -6,7 +6,7 @@ import ImagePopup from "../ui/ImagePopup"; // Make sure the path is correct
 const getUser = async (id: string) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+      `/api/graphql`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

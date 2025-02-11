@@ -95,7 +95,7 @@ const AddNewFraudCompany = () => {
 
       // Step 1: Create the Frauder
       const fraudRes = await fetch(
-        `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+        `/api/graphql`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -139,7 +139,7 @@ const AddNewFraudCompany = () => {
 
       // Step 2: Create the Proof
       const proofRes = await fetch(
-        `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+        `/api/graphql`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

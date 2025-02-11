@@ -17,7 +17,7 @@ const DeleteAccount = ({
     setError(null);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`, {
+      const res = await fetch(`/api/graphql`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

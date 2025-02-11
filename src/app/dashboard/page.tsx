@@ -33,7 +33,7 @@ const Dashboard = () => {
 
         // Fetch user data including insertedFrauders
         const userRes = await fetch(
-          `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+          `/api/graphql`,
           {
             method: "POST",
             headers: {
@@ -65,7 +65,7 @@ const Dashboard = () => {
         const frauderPromises = insertedFrauders.map(
           async (frauderId: string) => {
             const res = await fetch(
-              `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+              `/api/graphql`,
               {
                 method: "POST",
                 headers: {
@@ -111,7 +111,7 @@ const Dashboard = () => {
         // Fetch proofs for each fraud company
         const proofPromises = frauderResults.map(async (frauder) => {
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+            `/api/graphql`,
             {
               method: "POST",
               headers: {

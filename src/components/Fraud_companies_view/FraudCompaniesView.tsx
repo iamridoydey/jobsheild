@@ -28,7 +28,7 @@ const FraudCompaniesView = () => {
     const fetchFrauders = async () => {
       try {
         const fraudRes = await fetch(
-          `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+          `/api/graphql`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

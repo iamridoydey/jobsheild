@@ -41,7 +41,7 @@ const FraudCompanyDetailsView = () => {
     try {
       const screenshotUrls = await handleUploadImages(images);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`, {
+      const res = await fetch(`/api/graphql`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const FraudCompanyDetailsView = () => {
         setError(null);
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+          `/api/graphql`,
           {
             method: "POST",
             headers: {
@@ -145,7 +145,7 @@ const FraudCompanyDetailsView = () => {
     const fetchProofs = async (frauderId: string) => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+          `/api/graphql`,
           {
             method: "POST",
             headers: {
