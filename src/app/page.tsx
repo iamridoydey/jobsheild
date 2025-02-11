@@ -94,7 +94,7 @@ const Home = () => {
           JobShield helps you identify and avoid fraudulent companies and
           spammers. Join our community to share and access verified information.
         </p>
-        <div className="flex justify-center space-x-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8">
           <Link
             href="/fraud_companies"
             className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition"
