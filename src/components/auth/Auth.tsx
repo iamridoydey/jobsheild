@@ -15,7 +15,7 @@ const SignInSignUpPopup = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [isLoading, setIsLoading] = useState(false); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +35,7 @@ const SignInSignUpPopup = () => {
           setError("Invalid email, username, or password");
         } else {
           setAuthPopup(false); // Close popup on successful sign-in
+          window.location.href = "/dashboard"
         }
       } else {
         // Sign Up (Handle separately with API call)
@@ -79,7 +80,8 @@ const SignInSignUpPopup = () => {
         if (signInRes?.error) {
           setError("Failed to sign in after sign-up. Please try logging in.");
         } else {
-          setAuthPopup(false); // Close popup on successful sign-in
+          setAuthPopup(false);
+          window.location.href = "/settings"
         }
       }
     } catch (error) {
@@ -90,7 +92,7 @@ const SignInSignUpPopup = () => {
           : "Invalid email, username, or password"
       );
     } finally {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false); 
     }
   };
 
