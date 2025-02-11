@@ -18,6 +18,17 @@ const handler = startServerAndCreateNextHandler<NextRequest>(server, {
 
 // Wrap the handler to add CORS headers
 const wrappedHandler = async (req: NextRequest) => {
+  // Skip handling for OPTIONS requests
+  if (req.method === "OPTIONS") {
+    return new NextResponse(null, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  }
+
   try {
     const response = await handler(req);
     const headers = new Headers(response.headers);
@@ -44,6 +55,7 @@ const wrappedHandler = async (req: NextRequest) => {
 // Handle OPTIONS method for CORS preflight
 export const OPTIONS = async () => {
   return new NextResponse(null, {
+    status: 200,
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
