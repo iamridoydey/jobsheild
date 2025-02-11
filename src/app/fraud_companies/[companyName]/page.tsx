@@ -1,107 +1,245 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import fraudersData from "@/lib/frauders_temp_data";
 import fallback from "@/public/fallback.svg";
-import Proof from "@/components/ui/Proof";
+import HrList from "@/components/Fraud_companies_view/HrList";
+import { Frauder, ProofData } from "@/lib/interfaces";
+import ImportantLinks from "@/components/Fraud_companies_view/ImportantLinks";
+import ProofSection from "@/components/Fraud_companies_view/ProofSection";
+import { handleUploadImages } from "@/lib/imageOperator";
+import FraudProof from "@/components/Fraud_companies_view/FraudProof";
+import { useSession } from "next-auth/react";
 
 const FraudCompanyDetailsView = () => {
   const params = useParams();
-  const companyName = params?.companyName as string;
+  const companyName = decodeURIComponent(params?.companyName as string);
+
+  // get the user
+  const {data: session} = useSession();
+  const userId = session?.user._id;
+  const [frauder, setFrauder] = useState<Frauder | null>(null);
+  const [proofs, setProofs] = useState<ProofData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState("");
   const [images, setImages] = useState<File[]>([]);
+  const [isCreatingProof, setIsCreatingProof] = useState(false);
 
-  const handleProofPopup = ()=>{
-    setIsOpen(true)
-  }
+  const handleProofPopup = () => {
+    setIsOpen(true);
+  };
 
-  if (!companyName) return null;
+  const handleCreateProof = async () => {
+    if (!frauder || !text || images.length === 0) return;
 
-  // Find the frauder based on companyName
-  const frauder = fraudersData.find(
-    (f) => f.companyName === decodeURIComponent(companyName)
-  );
+    setIsCreatingProof(true);
 
+    try {
+      const screenshotUrls = await handleUploadImages(images);
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: `
+              mutation CreateProof($frauderId: ID!, $submittedBy: ID!, $screenshots: [String!]!, $description: String) {
+                createProof(frauderId: $frauderId, submittedBy: $submittedBy, screenshots: $screenshots, description: $description) {
+                  _id
+                  frauderId
+                  submittedBy
+                  screenshots
+                  description
+                  isJustified
+                  createdAt
+                }
+              }
+            `,
+          variables: {
+            frauderId: frauder._id,
+            submittedBy: userId, 
+            screenshots: screenshotUrls,
+            description: text,
+          },
+        }),
+      });
+
+      const { data, errors } = await res.json();
+
+      if (errors) {
+        setError(errors[0].message);
+      } else {
+        // Add the new proof to the state
+        setProofs((prevProofs) => [...prevProofs, data.createProof]);
+        // Reset the form
+        setText("");
+        setImages([]);
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsCreatingProof(false);
+    }
+  };
+
+  useEffect(() => {
+    const fetchFrauder = async () => {
+      if (!companyName) return;
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              query: `
+                query GetFrauder($companyName: String!) {
+                  getFrauder(companyName: $companyName) {
+                    _id
+                    companyName
+                    logo
+                    hrList {
+                      name
+                      account
+                      accountUrl
+                    }
+                    importantLinks {
+                      key
+                      value
+                    }
+                  }
+                }
+            `,
+              variables: { companyName },
+            }),
+          }
+        );
+
+        const { data, errors } = await res.json();
+
+        if (errors) {
+          setError(errors[0].message);
+        } else {
+          setFrauder(data.getFrauder);
+          // Fetch proofs after setting the frauder
+          fetchProofs(data.getFrauder._id);
+        }
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchProofs = async (frauderId: string) => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_DOMAIN}/api/graphql`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              query: `
+                query GetProofs($frauderId: String!) {
+                  getProofs(frauderId: $frauderId) {
+                    _id
+                    frauderId
+                    submittedBy
+                    screenshots
+                    description
+                    isJustified
+                    createdAt
+                  }
+                }
+            `,
+              variables: { frauderId },
+            }),
+          }
+        );
+
+        const { data, errors } = await res.json();
+
+        if (errors) {
+          setError(errors[0].message);
+        } else {
+          setProofs(data.getProofs);
+        }
+      } catch (err: any) {
+        setError(err.message);
+      }
+    };
+
+    fetchFrauder();
+  }, [companyName]);
+
+  if (loading) return <p className="text-center">Loading...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
   if (!frauder)
     return <p className="text-center text-red-500">Company not found</p>;
 
   return (
     <div className="mx-auto max-w-3xl">
-      <section className=" mx-auto p-6 bg-red-400 rounded-md">
+      {/* Company Details Section */}
+      <section className="mx-auto p-6 bg-red-400 rounded-md">
         <div className="flex flex-col md:flex-row items-center gap-4">
-          <figure className="max-w-24 max-h-24 overflow-hidden rounded-full border border-gray-300">
+          {/* Logo */}
+          <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-gray-300">
             <Image
-              src={fallback}
-              alt={`${frauder?.companyName || "Company"} logo`}
-              width={80}
-              height={80}
-              className="w-full h-full object-cover"
+              src={frauder.logo || fallback}
+              alt={`${frauder.companyName} logo`}
+              fill
+              className="object-cover"
             />
-          </figure>
-
+          </div>
           <h1 className="text-2xl font-bold">{frauder.companyName}</h1>
         </div>
 
         {/* HR List */}
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold">HR Contacts</h2>
-          <ul className="mt-2 space-y-2">
-            {frauder.hrList?.map((hr, index) => (
-              <li key={index} className="bg-gray-100 p-3 rounded">
-                <p className="font-medium">{hr.name}</p>
-                <a
-                  href={hr.accountUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600"
-                >
-                  {hr.account}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <HrList frauder={frauder} />
 
         {/* Important Links */}
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold">Important Links</h2>
-          <ul className="mt-2 space-y-2">
-            {frauder.importantLinks?.map((link, index) => (
-              <li key={index} className="bg-gray-100 p-3 rounded">
-                <span className="font-medium">{link.key}: </span>
-                <a
-                  href={link.value}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600"
-                >
-                  {link.value}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ImportantLinks frauder={frauder} />
       </section>
+
+      {/* Add Proof Section */}
       <section className="proof_section bg-red-400 mt-4">
-        {/* Add New Proof */}
         <div className="p-4">
-          <button onClick={handleProofPopup} className="w-full proof_popup_btn border-[2px] rounded-full text-start p-2 font-bold bg-gray-300">
+          <button
+            onClick={handleProofPopup}
+            className="w-full proof_popup_btn border-2 rounded-full text-start p-2 font-bold bg-gray-300 hover:bg-gray-400 transition"
+          >
             Add Proof
           </button>
-          {/* Add proof popup */}
-          <Proof
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            text={text}
-            setText={setText}
-            images={images}
-            setImages={setImages}
-          />
         </div>
       </section>
+
+      {/* Fraud Proof Popup */}
+      <FraudProof 
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        text={text}
+        setText={setText}
+        images={images}
+        setImages={setImages}
+        isLoading={isCreatingProof}
+        onSubmit={handleCreateProof}
+      />
+
+      {/* Proofs Section */}
+      <ProofSection proofs={proofs} isLoading={isCreatingProof} />
     </div>
   );
 };
