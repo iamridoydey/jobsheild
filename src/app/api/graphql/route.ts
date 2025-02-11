@@ -10,7 +10,14 @@ const server = new ApolloServer({
 });
 
 // Define the handler function to handle the request and context properly
-const handler = startServerAndCreateNextHandler<NextRequest>(server);
+const handler = startServerAndCreateNextHandler<NextRequest>(server, {
+  context: async (req) => ({ req }),
+});
 
-export const GET = handler;
-export const POST = handler;
+// Wrap the handler to match the expected Next.js API route signature
+const wrappedHandler = async (req: NextRequest) => {
+  return handler(req);
+};
+
+export const GET = wrappedHandler;
+export const POST = wrappedHandler;
