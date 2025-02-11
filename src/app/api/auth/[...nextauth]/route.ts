@@ -1,9 +1,10 @@
-import NextAuth, { AuthOptions, User} from "next-auth";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 
-export const authOptions: AuthOptions = {
+const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -86,7 +87,9 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt(params:any) {
+      const { token, user,trigger, session } =
+        params;
       if (user) {
         token.user = user;
       }
@@ -97,8 +100,8 @@ export const authOptions: AuthOptions = {
 
       return token;
     },
-    async session({ session, token }) {
-      session.user = token.user as User;
+    async session({ session, token }: {session: any, token: any}) {
+      session.user = token.user;
       return session;
     },
   },
@@ -106,4 +109,5 @@ export const authOptions: AuthOptions = {
 };
 
 const handler = NextAuth(authOptions);
+
 export { handler as GET, handler as POST };
