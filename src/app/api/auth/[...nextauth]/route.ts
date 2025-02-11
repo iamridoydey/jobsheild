@@ -75,6 +75,7 @@ export const authOptions: AuthOptions = {
             return null;
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { password, ...userData } = user;
           return userData;
         } catch (error) {
