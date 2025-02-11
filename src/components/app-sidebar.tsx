@@ -21,7 +21,6 @@ import { NavUser } from "./nav-user";
 import { useAuthPopup } from "@/hooks/authPopup";
 import { useSession } from "next-auth/react";
 
-
 // Sample data
 const items = [
   {
@@ -44,20 +43,36 @@ const items = [
   },
 ];
 
-
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { state } = useSidebar();
+  const { state, setOpen, isMobile, setOpenMobile } = useSidebar();
   const isCollapsed = state === "collapsed";
 
   // Get the current pathname
   const pathname = usePathname();
 
   // Get access to the user
-  const {data: session} = useSession();
+  const { data: session } = useSession();
 
-  const { setAuthPopup } = useAuthPopup();
- 
+  // If there is user login we will show the full navbar items
+  // otherwise just show the fraud_companies
+  // Filter items based on session
+  const filteredItems = session
+    ? items
+    : items.filter((item) => item.url === "/fraud_companies");
+
+  const { showAuthPopup, setAuthPopup } = useAuthPopup();
+
+  // Collapse the sidebar if showAuthPopup is true
+  React.useEffect(() => {
+    if (showAuthPopup) {
+      if (isMobile) {
+        setOpenMobile(false);
+      } else {
+        setOpen(false);
+      }
+    }
+  }, [showAuthPopup, setOpen, isMobile, setOpenMobile]);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       {/* Sidebar Header */}
@@ -84,7 +99,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {/* Sidebar Content */}
       <SidebarContent>
         <SidebarMenu className="mt-4 ">
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
                 <Link
