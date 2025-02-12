@@ -29,17 +29,17 @@ export default function UserVerification({
       setTimeout(() => {
         setShowVerificationModal(false);
       }, 2000);
-    } catch (error:any) {
-      console.log("Handle verify code error: ", error)
+    } catch (error: any) {
+      console.log("Handle verify code error: ", error);
       setVerificationStatus("Incorrect code. Please try again.");
     }
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-red-400 border p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-lg font-bold">Email Verification</h2>
-        <p className="text-sm text-gray-600 mt-2">
+      <div className="bg-gray-800 border p-6 rounded-lg shadow-lg w-96">
+        <h2 className="text-lg font-bold text-gray-200">Email Verification</h2>
+        <p className="text-sm text-gray-400 mt-2">
           Please enter the verification code sent to your email.
         </p>
 

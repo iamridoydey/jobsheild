@@ -55,7 +55,7 @@ const FileInput = ({
 
   return (
     <div className="upload_image_container">
-      <h4 className="title font-bold">Logo</h4>
+      <h4 className="title font-bold text-gray-200">Logo</h4>
       <div className="flex flex-col items-center gap-2.5">
         <div
           onDragOver={handleDragOver}
@@ -65,7 +65,7 @@ const FileInput = ({
           className={`w-32 h-32 border-2 ${
             isDragging ? "border-blue-500" : "border-gray-300"
           } border-dashed rounded-lg flex justify-center items-center cursor-pointer ${
-            isDragging ? "bg-blue-50" : "bg-gray-50"
+            isDragging ? "bg-blue-50" : "bg-gray-200"
           }`}
         >
           {logoPreview ? (

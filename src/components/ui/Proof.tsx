@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { X } from "lucide-react";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
@@ -23,6 +22,7 @@ const Proof = ({
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Generate preview URLs for images
   useEffect(() => {
     const urls = images.map((file) => URL.createObjectURL(file));
     setPreviewUrls(urls);
@@ -63,10 +63,10 @@ const Proof = ({
   };
 
   return isOpen ? (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
-      <div className="create_proof_wrapper border-gray-800 border-4 bg-red-400 rounded-lg shadow-md w-full max-w-lg md:max-w-xl lg:max-w-2xl overflow-y-auto relative mx-3">
-        <h3 className="px-4 py-2 text-zinc-800 font-bold text-lg flex justify-between items-center">
-          Add A New Proof
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-zinc-700 bg-opacity-80">
+      <div className="create_proof_wrapper border-gray-400 border-[1px] bg-gray-800 rounded-lg shadow-md w-full max-w-lg md:max-w-xl lg:max-w-2xl overflow-y-auto relative mx-3">
+        <h3 className="px-6 py-2 text-gray-200 font-bold text-lg flex justify-between items-center border-b-[1px]">
+          Add New Proof
           <button
             onClick={() => setIsOpen(false)}
             className="bg-gray-600 text-white rounded-full p-1"
@@ -74,7 +74,7 @@ const Proof = ({
             <X size={16} />
           </button>
         </h3>
-        <div className="flex flex-col items-center gap-4 p-4 pb-8">
+        <div className="flex flex-col items-center gap-4 p-6 pb-8">
           {/* Textarea */}
           <div className="w-full">
             <textarea
@@ -109,30 +109,32 @@ const Proof = ({
 
           {/* Image Preview */}
           <div className="grid grid-cols-3 gap-4 mt-4 w-full">
-            {previewUrls.slice(0, previewUrls.length == 3 ? previewUrls.length : 2).map((image, index) => (
-              <div
-                key={index}
-                className="relative h-24 md:h-32 lg:h-48"
-                onClick={() => openImageViewer(index)}
-              >
-                <Image
-                  src={image}
-                  alt={`Uploaded Image ${index + 1}`}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-lg cursor-pointer"
-                />
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteImage(index);
-                  }}
-                  className="absolute top-2 right-2 w-6 h-6 bg-gray-500 text-white p-1 rounded-full flex items-center justify-center font-bold"
+            {previewUrls
+              .slice(0, previewUrls.length == 3 ? previewUrls.length : 2)
+              .map((image, index) => (
+                <div
+                  key={index}
+                  className="relative h-24 md:h-32 lg:h-48"
+                  onClick={() => openImageViewer(index)}
                 >
-                  <X />
-                </button>
-              </div>
-            ))}
+                  <Image
+                    src={image}
+                    alt={`Uploaded Image ${index + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg cursor-pointer"
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteImage(index);
+                    }}
+                    className="absolute top-2 right-2 w-6 h-6 bg-gray-500 text-white p-1 rounded-full flex items-center justify-center font-bold"
+                  >
+                    <X />
+                  </button>
+                </div>
+              ))}
             {images.length > 3 && (
               <div className="relative h-24 md:h-32 lg:h-48 flex justify-center items-center bg-gray-100 border border-gray-300 rounded-lg">
                 <span className="text-2xl text-blue-500">
@@ -154,7 +156,9 @@ const Proof = ({
       <ImageViewer
         isImageOpen={isImageOpen}
         setIsImageOpen={setIsImageOpen}
-        images={previewUrls}
+        images={images} 
+        setImages={setImages} 
+        currentImageIndex={currentImageIndex}
       />
     </div>
   ) : null;

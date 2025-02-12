@@ -49,7 +49,7 @@ const HrList = ({
 
   return (
     <div className="hrlist_wrapper py-4">
-      <h4 className="hrlist_title font-bold">HR List</h4>
+      <h4 className="hrlist_title text-gray-200 font-bold">HR List</h4>
       <div className="flex flex-col">
         {hrList.map((field, index) => (
           <div
@@ -62,14 +62,14 @@ const HrList = ({
                 placeholder="HR Name"
                 value={field.name}
                 onChange={(e) => handleNameChange(index, e)}
-                className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-200 text-black"
+                className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-200 text-gray-800 font-semibold"
               />
             </div>
             <div className="w-full lg:w-auto flex-grow">
               <select
                 value={field.account}
                 onChange={(e) => handleSelectChange(index, e)}
-                className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-200 text-black"
+                className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-200 text-gray-800 font-semibold"
               >
                 <option value="website">Website</option>
                 <option value="linkedin">LinkedIn</option>
@@ -82,7 +82,7 @@ const HrList = ({
                 placeholder="URL"
                 value={field.accountUrl}
                 onChange={(e) => handleUrlChange(index, e)}
-                className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-200 text-black"
+                className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-200 text-gray-800 font-semibold"
               />
 
               {hrList.length > 1 && (

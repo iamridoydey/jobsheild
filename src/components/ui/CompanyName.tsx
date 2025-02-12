@@ -8,14 +8,14 @@ const CompanyName = ({
   }
   return (
     <div className="flex flex-col">
-      <label htmlFor="fraud_company_name" className="font-bold">
+      <label htmlFor="fraud_company_name" className="font-bold text-gray-200">
         Company Name
       </label>
       <input
         type="text"
         placeholder="Enter Company / Agency Name"
         id="fraud_company_name"
-        className="outline-none focus:outline-blue-500 p-2 rounded-sm bg-gray-200"
+        className="outline-none focus:outline-blue-500 p-2 rounded-sm bg-gray-200 text-gray-800 font-semibold"
         onChange={(e)=> handleOnChange(e)}
       />
     </div>

@@ -40,7 +40,7 @@ const AccountLinks = ({
 
   return (
     <div className="account_links_wrapper py-4">
-      <h4 className="account_links_title font-bold">Contact Links</h4>
+      <h4 className="account_links_title font-bold text-gray-200">Contact Links</h4>
       <div className="flex flex-col">
         {urls.map((field, index) => (
           <div
@@ -51,7 +51,7 @@ const AccountLinks = ({
               <select
                 value={field.key}
                 onChange={(e) => handleSelectChange(index, e)}
-                className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-100 text-black"
+                className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-200 text-gray-800 font-semibold"
               >
                 <option value="">Account</option>
                 <option value="website">Website</option>
@@ -65,7 +65,7 @@ const AccountLinks = ({
                 placeholder="Account URL"
                 value={field.value}
                 onChange={(e) => handleUrlChange(index, e)}
-                className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-100 text-black"
+                className="w-full p-2 border rounded outline-none focus:outline-blue-500 bg-gray-200 text-gray-800 font-semibold"
               />
 
               {urls.length > 1 && (

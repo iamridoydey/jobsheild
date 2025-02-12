@@ -53,11 +53,10 @@ const DeleteAccount = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
-      <div className="bg-red-400 p-6 border rounded-xl shadow-md w-full max-w-sm text-center">
-        <h4 className="text-xl font-bold text-gray-800">Delete Account</h4>
-        <p className="text-gray-700 mt-2">
-          Are you sure about deleting your account? This action is
-          irreversible.
+      <div className="bg-gray-800 p-6 border rounded-xl shadow-md w-full max-w-sm text-center">
+        <h4 className="text-xl font-bold text-gray-200">Delete Account</h4>
+        <p className="text-gray-200 mt-2">
+          Are you sure about deleting your account? This action is irreversible.
         </p>
 
         {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
@@ -72,7 +71,7 @@ const DeleteAccount = ({
           </button>
           <button
             onClick={() => setDeletePopup(false)}
-            className="w-full bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
+            className="w-full bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded-md"
           >
             Cancel
           </button>
