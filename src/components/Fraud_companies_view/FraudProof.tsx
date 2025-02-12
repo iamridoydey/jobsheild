@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { X } from "lucide-react";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
@@ -69,12 +68,12 @@ const FraudProof: React.FC<FraudProofProps> = ({
 
   return isOpen ? (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
-      <div className="create_proof_wrapper border-gray-800 border-4 bg-red-400 rounded-lg shadow-md w-full max-w-lg md:max-w-xl lg:max-w-2xl overflow-y-auto relative mx-3">
-        <h3 className="px-4 py-2 text-zinc-800 font-bold text-lg flex justify-between items-center">
-          Add A New FraudProof
+      <div className="create_proof_wrapper border-zinc-200 border-[1px] bg-gray-800 rounded-lg shadow-md w-full max-w-lg md:max-w-xl lg:max-w-2xl overflow-y-auto relative mx-3">
+        <h3 className="px-6 py-2 text-gray-200 font-bold text-lg flex justify-between items-center border-b-[1px]">
+          Add Some Proof
           <button
             onClick={() => setIsOpen(false)}
-            className="bg-gray-600 text-white rounded-full p-1"
+            className="bg-gray-400 text-white rounded-full p-1"
           >
             <X size={16} />
           </button>
@@ -161,7 +160,9 @@ const FraudProof: React.FC<FraudProofProps> = ({
       <ImageViewer
         isImageOpen={isImageOpen}
         setIsImageOpen={setIsImageOpen}
-        images={previewUrls}
+        images={images}
+        setImages={setImages}
+        currentImageIndex={currentImageIndex}
       />
     </div>
   ) : null;

@@ -108,17 +108,17 @@ const FraudCompaniesView = () => {
                   frauder.companyName
                 )}`}
                 passHref
-                className="bg-red-500 p-4 rounded-md shadow-md hover:bg-red-600 transition"
+                className="bg-gray-700 p-4 border-[1px] border-zinc-200 rounded-md shadow-md hover:bg-gray-600 transition"
               >
                 <div className="flex items-center gap-4">
                   <Image
                     src={frauder.logo}
                     alt={`${frauder.companyName} logo`}
-                    width={48}
-                    height={48}
+                    width={60}
+                    height={60}
                     className="rounded object-contain"
                   />
-                  <h2 className="text-lg font-semibold">
+                  <h2 className="text-lg text-gray-200 font-semibold">
                     {frauder.companyName}
                   </h2>
                 </div>

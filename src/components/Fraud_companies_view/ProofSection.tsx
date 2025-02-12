@@ -5,13 +5,11 @@ import ImagePopup from "../ui/ImagePopup"; // Make sure the path is correct
 
 const getUser = async (id: string) => {
   try {
-    const response = await fetch(
-      `/api/graphql`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          query: `
+    const response = await fetch(`/api/graphql`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `
             query GetUser($id: ID!) {
               getUser(id: $id) {
                 _id
@@ -19,12 +17,11 @@ const getUser = async (id: string) => {
               }
             }
           `,
-          variables: {
-            id,
-          },
-        }),
-      }
-    );
+        variables: {
+          id,
+        },
+      }),
+    });
 
     const { data, errors } = await response.json();
     if (errors) {
@@ -71,7 +68,7 @@ const ProofSection = ({
     };
 
     fetchUsernames();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [proofs]);
 
   const handleImageClick = (images: string[], index: number) => {
@@ -81,26 +78,29 @@ const ProofSection = ({
   };
 
   return (
-    <section className="proof_section bg-red-400 mt-4 p-4 rounded-md">
-      <h2 className="text-xl font-semibold mb-4">Proofs</h2>
+    <section className="proof_section bg-gray-800 shadow-md mt-4 p-4 rounded-md">
+      <h2 className="text-xl text-gray-200 font-semibold mb-4">Proofs</h2>
       {isLoading ? (
         <p className="text-center">Loading new proof...</p>
       ) : proofs.length > 0 ? (
         proofs.map((proof) => (
-          <div key={proof._id} className="bg-gray-100 p-4 rounded-md mb-4">
+          <div
+            key={proof._id}
+            className="bg-gray-600 border-zinc-200 border-[1px] p-4 rounded-md mb-4"
+          >
             <div className="flex items-center mb-2">
               <Image
                 src={usernames[proof.submittedBy]?.avatar || "/user_avatar.svg"}
                 alt={`Avatar of ${usernames[proof.submittedBy]?.username}`}
                 width={40}
                 height={40}
-                className="rounded-full mr-2"
+                className="rounded-full mr-2 border-2 border-blue-600"
               />
-              <h3 className="text-lg font-semibold">
+              <h3 className="text-lg font-semibold text-blue-200">
                 {usernames[proof.submittedBy]?.username}
               </h3>
             </div>
-            <p className="mb-2">{proof.description}</p>
+            <p className="mb-2 text-gray-200">{proof.description}</p>
             <div className="flex flex-wrap gap-2">
               {proof.screenshots.map((screenshot, index) => (
                 <Image
@@ -109,12 +109,12 @@ const ProofSection = ({
                   alt={`Proof Screenshot ${index + 1}`}
                   width={100}
                   height={100}
-                  className="rounded-md cursor-pointer"
+                  className="rounded-md cursor-pointer border-2 border-blue-600"
                   onClick={() => handleImageClick(proof.screenshots, index)}
                 />
               ))}
             </div>
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-gray-400 mt-2">
               Created At: {new Date(proof.createdAt).toLocaleString()}
             </p>
           </div>
