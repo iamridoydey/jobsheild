@@ -17,7 +17,7 @@ const FraudCompanyDetailsView = () => {
   const companyName = decodeURIComponent(params?.companyName as string);
 
   // get the user
-  const {data: session} = useSession();
+  const { data: session } = useSession();
   const userId = session?.user._id;
   const [frauder, setFrauder] = useState<Frauder | null>(null);
   const [proofs, setProofs] = useState<ProofData[]>([]);
@@ -62,7 +62,7 @@ const FraudCompanyDetailsView = () => {
             `,
           variables: {
             frauderId: frauder._id,
-            submittedBy: userId, 
+            submittedBy: userId,
             screenshots: screenshotUrls,
             description: text,
           },
@@ -95,15 +95,13 @@ const FraudCompanyDetailsView = () => {
         setLoading(true);
         setError(null);
 
-        const res = await fetch(
-          `/api/graphql`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              query: `
+        const res = await fetch(`/api/graphql`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
                 query GetFrauder($companyName: String!) {
                   getFrauder(companyName: $companyName) {
                     _id
@@ -121,10 +119,9 @@ const FraudCompanyDetailsView = () => {
                   }
                 }
             `,
-              variables: { companyName },
-            }),
-          }
-        );
+            variables: { companyName },
+          }),
+        });
 
         const { data, errors } = await res.json();
 
@@ -144,15 +141,13 @@ const FraudCompanyDetailsView = () => {
 
     const fetchProofs = async (frauderId: string) => {
       try {
-        const res = await fetch(
-          `/api/graphql`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              query: `
+        const res = await fetch(`/api/graphql`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
                 query GetProofs($frauderId: String!) {
                   getProofs(frauderId: $frauderId) {
                     _id
@@ -165,10 +160,9 @@ const FraudCompanyDetailsView = () => {
                   }
                 }
             `,
-              variables: { frauderId },
-            }),
-          }
-        );
+            variables: { frauderId },
+          }),
+        });
 
         const { data, errors } = await res.json();
 
@@ -193,10 +187,10 @@ const FraudCompanyDetailsView = () => {
   return (
     <div className="mx-auto max-w-3xl">
       {/* Company Details Section */}
-      <section className="mx-auto p-6 bg-red-400 rounded-md">
+      <section className="mx-auto p-6 bg-gray-700 rounded-md shadow-md">
         <div className="flex flex-col md:flex-row items-center gap-4">
           {/* Logo */}
-          <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-gray-300">
+          <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-blue-500">
             <Image
               src={frauder.logo || fallback}
               alt={`${frauder.companyName} logo`}
@@ -204,7 +198,7 @@ const FraudCompanyDetailsView = () => {
               className="object-cover"
             />
           </div>
-          <h1 className="text-2xl font-bold">{frauder.companyName}</h1>
+          <h1 className="text-2xl font-bold text-gray-200">{frauder.companyName}</h1>
         </div>
 
         {/* HR List */}
@@ -215,11 +209,11 @@ const FraudCompanyDetailsView = () => {
       </section>
 
       {/* Add Proof Section */}
-      <section className="proof_section bg-red-400 mt-4">
+      <section className="proof_section bg-gray-700 shadow-md rounded-md mt-4">
         <div className="p-4">
           <button
             onClick={handleProofPopup}
-            className="w-full proof_popup_btn border-2 rounded-full text-start p-2 font-bold bg-gray-300 hover:bg-gray-400 transition"
+            className="w-full text-gray-800 proof_popup_btn border-2 rounded-full text-start p-2 font-bold bg-gray-400 hover:bg-gray-300 transition"
           >
             Add Proof
           </button>
@@ -227,7 +221,7 @@ const FraudCompanyDetailsView = () => {
       </section>
 
       {/* Fraud Proof Popup */}
-      <FraudProof 
+      <FraudProof
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         text={text}

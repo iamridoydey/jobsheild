@@ -191,7 +191,7 @@ const Dashboard = () => {
               e.target.value as "fraud-companies" | "all-proofs"
             )
           }
-          className="p-2 border rounded-md"
+          className="p-2 border outline-blue outline-2 rounded-md bg-gray-200 font-semibold text-zinc-800"
         >
           <option value="fraud-companies">Added Fraud Companies</option>
           <option value="all-proofs">All Proofs</option>
@@ -201,14 +201,14 @@ const Dashboard = () => {
       {/* Conditional Rendering Based on Selected Option */}
       {selectedOption === "fraud-companies" ? (
         <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">
+          <h2 className="text-xl text-gray-200 font-semibold mb-4">
             Your Added Fraud Companies
           </h2>
           <div className="grid grid-cols-1 gap-4">
             {frauders.map((frauder) => (
               <div
                 key={frauder._id}
-                className="bg-white p-4 rounded-md shadow-md"
+                className="bg-gray-800 p-4 rounded-md shadow-md border-[1px] border-zinc-200"
               >
                 <div className="flex items-center gap-4">
                   <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300">
@@ -219,7 +219,7 @@ const Dashboard = () => {
                       className="object-cover"
                     />
                   </div>
-                  <h3 className="text-lg font-semibold">
+                  <h3 className="text-lg text-gray-200 font-semibold">
                     {frauder.companyName}
                   </h3>
                 </div>
@@ -237,14 +237,16 @@ const Dashboard = () => {
         </section>
       ) : (
         <section>
-          <h2 className="text-xl font-semibold mb-4">All Proofs</h2>
+          <h2 className="text-xl text-gray-200 font-semibold mb-4">
+            All Proofs
+          </h2>
           <div className="space-y-4">
             {proofs.map((proof) => (
               <div
                 key={proof._id}
-                className="bg-white p-4 rounded-md shadow-md"
+                className="bg-gray-800 p-4 rounded-md shadow-md border-[1px] border-zinc-200"
               >
-                <p className="mb-2">{proof.description}</p>
+                <p className="mb-2 text-gray-200">{proof.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {proof.screenshots.map((screenshot, index) => (
                     <Image
@@ -258,7 +260,7 @@ const Dashboard = () => {
                     />
                   ))}
                 </div>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-sm text-gray-400 mt-2">
                   Created At: {new Date(proof.createdAt).toLocaleString()}
                 </p>
               </div>

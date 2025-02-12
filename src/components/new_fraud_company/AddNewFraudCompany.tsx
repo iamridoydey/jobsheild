@@ -17,7 +17,7 @@ import Proof from "../ui/Proof";
 import { HR, URL } from "@/lib/interfaces";
 import { handleUploadImages, handleUploadLogo } from "@/lib/imageOperator";
 import { useSession } from "next-auth/react";
-import NotificationPopup from "../ui/NotificationPopup"
+import NotificationPopup from "../ui/NotificationPopup";
 
 const AddNewFraudCompany = () => {
   const [isAddingFrauder, setAddingFrauder] = useState(false);
@@ -36,10 +36,7 @@ const AddNewFraudCompany = () => {
   const validateFields = () => {
     if (!companyName) return "Company name is required.";
     if (!logo) return "Company logo is required.";
-    if (
-      urls.length === 0 ||
-      urls.some((url) => !url.key || !url.value)
-    )
+    if (urls.length === 0 || urls.some((url) => !url.key || !url.value))
       return "All account links must be filled.";
     if (
       hrList.length === 0 ||
@@ -62,7 +59,9 @@ const AddNewFraudCompany = () => {
 
     // Check if the user is verified
     if (!session?.user?.isVerified) {
-      setNotification("You can't add a fraud company unless you are a verified user!");
+      setNotification(
+        "You can't add a fraud company unless you are a verified user!"
+      );
       return;
     }
 
@@ -94,13 +93,11 @@ const AddNewFraudCompany = () => {
       }));
 
       // Step 1: Create the Frauder
-      const fraudRes = await fetch(
-        `/api/graphql`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            query: `
+      const fraudRes = await fetch(`/api/graphql`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query: `
             mutation CreateFrauder(
               $companyName: String!
               $hrList: [HrSchemaInput!]!
@@ -119,16 +116,15 @@ const AddNewFraudCompany = () => {
               }
             }
           `,
-            variables: {
-              companyName,
-              hrList: hrListInput,
-              logo: uploadedLogoUrl,
-              importantLinks: importantLinksInput,
-              createdBy: session.user._id,
-            },
-          }),
-        }
-      );
+          variables: {
+            companyName,
+            hrList: hrListInput,
+            logo: uploadedLogoUrl,
+            importantLinks: importantLinksInput,
+            createdBy: session.user._id,
+          },
+        }),
+      });
 
       const fraudData = await fraudRes.json();
       if (fraudData.errors) {
@@ -138,13 +134,11 @@ const AddNewFraudCompany = () => {
       const frauderId = fraudData.data.createFrauder._id;
 
       // Step 2: Create the Proof
-      const proofRes = await fetch(
-        `/api/graphql`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            query: `
+      const proofRes = await fetch(`/api/graphql`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query: `
             mutation CreateProof(
               $frauderId: ID!
               $submittedBy: ID!
@@ -161,15 +155,14 @@ const AddNewFraudCompany = () => {
               }
             }
           `,
-            variables: {
-              frauderId,
-              submittedBy: session.user._id,
-              screenshots: uploadedImageUrls,
-              description: text,
-            },
-          }),
-        }
-      );
+          variables: {
+            frauderId,
+            submittedBy: session.user._id,
+            screenshots: uploadedImageUrls,
+            description: text,
+          },
+        }),
+      });
 
       const proofData = await proofRes.json();
       if (proofData.errors) {
@@ -187,7 +180,6 @@ const AddNewFraudCompany = () => {
 
       // Notify the user of success
       setNotification("Successfully Added the Proof. It will be under review");
-
 
       // Redirect to home page
       window.location.href = "/fraud_companies";
@@ -217,11 +209,10 @@ const AddNewFraudCompany = () => {
       </div>
 
       {/* Main Form */}
-      <div className="add_frauder_warpper mt-6 border-gray-800 border-4 bg-red-400 rounded-lg shadow-md">
-        <h3 className="px-4 py-2 text-zinc-800 font-bold text-lg">
-          Add New Fraud Company
+      <div className="add_frauder_warpper mt-6 border-gray-400 border-[1px] bg-gray-800 rounded-lg shadow-md">
+        <h3 className="px-4 py-2 text-gray-100 font-bold text-lg border-b-[1px] border-gray-400">
+          Add Fraud Company
         </h3>
-        <hr className="border-gray-800 border-[1px]" />
         <div className="add_frauder p-6 flex flex-col gap-4">
           <CompanyName setCompanyName={setCompanyName} />
           <div className="pic_url_container flex flex-col lg:flex-row gap-4">
@@ -270,7 +261,12 @@ const AddNewFraudCompany = () => {
       />
 
       {/* Error Popup */}
-      {notification && <NotificationPopup message={notification} onClose={() => setNotification(null)} />}
+      {notification && (
+        <NotificationPopup
+          message={notification}
+          onClose={() => setNotification(null)}
+        />
+      )}
     </section>
   );
 };

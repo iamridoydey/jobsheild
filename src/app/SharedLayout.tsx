@@ -24,7 +24,7 @@ export default function SharedLayout({
         <SidebarProvider>
           <ShowAuthProvider>
             <AppSidebar />
-            <div className="w-full bg-red-300 relative">
+            <div className="w-full bg-gray-900 relative">
               <SidebarTrigger className="text-black font-bold bg-gray-400 top-0 left-0 sticky" />
               <div className={cn("pages_wrapper", className)}>{children}</div>
             </div>

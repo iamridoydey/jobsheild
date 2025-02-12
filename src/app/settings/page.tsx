@@ -53,21 +53,18 @@ export default function SettingsPage() {
         setIsLoading(true);
         setError(null);
         try {
-          const res = await fetch(
-            `/api/graphql`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                query: `
+          const res = await fetch(`/api/graphql`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              query: `
                   mutation SendVerificationEmail($email: String!) {
                     sendVerificationEmail(email: $email)
                   }
                 `,
-                variables: { email: session?.user?.email },
-              }),
-            }
-          );
+              variables: { email: session?.user?.email },
+            }),
+          });
 
           const data = await res.json();
           if (data.errors) {
@@ -187,16 +184,15 @@ export default function SettingsPage() {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="bg-red-400 shadow-lg rounded-lg border-gray-800 border-4 p-6 mt-4">
-        <h2 className="text-zinc-800 font-bold text-lg md:text-xl">Settings</h2>
-        <hr className="border-[1px] border-gray-800 my-2" />
-        <div className="divide-y divide-zinc-700 font-semibold">
+      <div className="bg-gray-700 shadow-lg rounded-lg border-zinc-200 border-[1px] mt-4">
+        <h2 className="text-gray-200 font-bold text-lg md:text-xl border-zinc-200 border-b-[1px] px-6 py-2">Settings</h2>
+        <div className="divide-y divide-zinc-200 font-semibold p-6 text-gray-200">
           {Object.entries(formData).map(([field, value]) => (
             <div
               key={field}
               className="flex flex-wrap items-center justify-between py-4"
             >
-              <div className="w-full md:w-1/3 font-bold text-sm md:text-base">
+              <div className="w-full md:w-1/3 font-bold text-md md:text-base">
                 {field.charAt(0).toUpperCase() + field.slice(1)}
               </div>
               <div className="w-full md:w-2/3 flex items-center justify-between">
@@ -278,7 +274,7 @@ export default function SettingsPage() {
                     <span className="text-sm md:text-base">{value}</span>
                     <button
                       onClick={() => setEditableField(field)}
-                      className="text-blue-900 hover:underline text-sm md:text-base"
+                      className="text-blue-400 hover:underline text-sm md:text-base"
                       disabled={isLoading}
                     >
                       Edit
@@ -291,10 +287,13 @@ export default function SettingsPage() {
 
           {/* Delete button */}
           <div className="delete_account">
-            <h4 className="text-sm fotn-semibold py-3">Delete Account</h4>
+            <h4 className="text-md fotn-semibold py-3">Delete Account</h4>
 
             <div className="delete_button_wrapper flex justify-end">
-              <button onClick={()=> setDeletePopup(true)} className="py-1 px-2 text-white bg-red-600 flex gap-1 items-center rounded-sm">
+              <button
+                onClick={() => setDeletePopup(true)}
+                className="py-1 px-2 text-white bg-red-600 flex gap-1 items-center rounded-sm"
+              >
                 <Trash2 size={16} /> <span>Delete</span>{" "}
               </button>
             </div>
@@ -311,8 +310,12 @@ export default function SettingsPage() {
         />
       )}
 
-
-      {isDeletePopup && <DeleteAccount userId={session?.user._id || ""} setDeletePopup={setDeletePopup}/>}
+      {isDeletePopup && (
+        <DeleteAccount
+          userId={session?.user._id || ""}
+          setDeletePopup={setDeletePopup}
+        />
+      )}
     </div>
   );
 }
