@@ -104,8 +104,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenuButton asChild>
                 <Link
                   href={`${item.url}`}
-                  className={`flex items-center gap-3 px-3 py-6 hover:text-gray-600 hover:bg-transparent ${
-                    pathname === item.url ? "text-zinc-800 font-bold" : ""
+                  className={`flex items-center gap-3 px-3 py-6 hover:text-zinc-400  ${
+                    pathname === item.url ? "text-zinc-400 font-bold" : ""
                   }`}
                 >
                   <span className="iconWrapper">
@@ -126,7 +126,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
 
       {/* Sidebar Footer */}
-      <SidebarFooter>
+      <SidebarFooter >
         {session ? (
           <NavUser
             user={{
@@ -138,7 +138,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ) : (
           <button
             onClick={() => setAuthPopup(true)}
-            className="text-center ml-2 border-2 border-zinc-800 rounded-lg text-lg hover:text-white hover:border-white transition-all 3s shadow-lg bg-red-400"
+            className="text-center ml-2 border-2 border-zinc-800 rounded-lg text-lg hover:text-white hover:border-white transition-all 3s shadow-lg bg-gray-900"
           >
             Sign In
           </button>
